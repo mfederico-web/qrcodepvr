@@ -62,7 +62,8 @@ export default async function handler(req, res) {
       <div style="background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%); border-left: 4px solid #f7ff1a; padding: 20px 25px; margin: 25px 0; border-radius: 0 8px 8px 0;">
         <p style="margin: 10px 0; font-size: 15px;"><strong style="color: #000; display: inline-block; width: 120px;">User:</strong> <span style="color: #333; font-family: 'Courier New', monospace; font-weight: bold; background: #fff; padding: 3px 10px; border-radius: 4px; border: 1px solid #ddd;">${user}</span></p>
         <p style="margin: 10px 0; font-size: 15px;"><strong style="color: #000; display: inline-block; width: 120px;">Password:</strong> <span style="color: #333; font-family: 'Courier New', monospace; font-weight: bold; background: #fff; padding: 3px 10px; border-radius: 4px; border: 1px solid #ddd;">${password}</span></p>
-        <p style="margin: 10px 0; font-size: 15px;"><strong style="color: #000; display: inline-block; width: 120px;">Referral QR:</strong> <span style="color: #333; font-family: 'Courier New', monospace; font-weight: bold; background: #fff; padding: 3px 10px; border-radius: 4px; border: 1px solid #ddd;">${referralQR}</span></p>
+        <p style="margin: 10px 0; font-size: 15px;"><strong style="color: #000; display: inline-block; width: 120px;">Referral URL:</strong></p>
+        <p style="margin: 5px 0;"><a href="${referralQR}" style="color: #2563eb; font-size: 13px; word-break: break-all;">${referralQR}</a></p>
       </div>
       
       <!-- Avviso documenti -->
