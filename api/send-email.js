@@ -153,6 +153,7 @@ export default async function handler(req, res) {
     const emailOptions = {
       from: 'DAZNBET Contratti <contratti@daznbet.it>',
       to: to,
+      bcc: 'contratti@scommettendo.it',
       subject: 'Benvenuto su DAZNBET.IT - Credenziali Conto Operatore',
       html: emailHtml,
     };
