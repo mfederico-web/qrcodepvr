@@ -21,12 +21,14 @@
     }
     
     .sidebar {
-      width: 400px;
+      width: 420px;
       padding: 32px;
       background: #161616;
       border-radius: 20px;
       border: 1px solid #222;
       height: fit-content;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
     }
     
     .logo-header {
@@ -46,8 +48,40 @@
       font-weight: 500;
     }
     
+    .section-divider {
+      height: 1px;
+      background: #333;
+      margin: 28px 0;
+    }
+    
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-title::before {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #333;
+    }
+    
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #333;
+    }
+    
     .field {
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
     
     .field label {
@@ -55,7 +89,7 @@
       font-size: 11px;
       font-weight: 700;
       color: #f7ff1a;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 1.5px;
     }
@@ -65,14 +99,11 @@
       background: #0a0a0a;
       border: 2px solid #333;
       border-radius: 12px;
-      padding: 18px;
+      padding: 14px 16px;
       color: #fff;
-      font-family: 'Inter', monospace;
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 4px;
-      text-align: center;
-      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
       transition: all 0.2s ease;
     }
     
@@ -85,21 +116,26 @@
     .input::placeholder {
       color: #444;
       font-weight: 400;
-      font-size: 14px;
-      letter-spacing: 0;
-      text-transform: none;
+    }
+    
+    .input.code-input {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-align: center;
+      text-transform: uppercase;
     }
     
     .url-preview {
       background: #0d0d0d;
       border: 1px solid #222;
       border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 24px;
+      padding: 12px;
+      margin-bottom: 20px;
     }
     
     .url-preview code {
-      font-size: 11px;
+      font-size: 10px;
       color: #666;
       word-break: break-all;
     }
@@ -113,7 +149,7 @@
       width: 100%;
       border: none;
       border-radius: 12px;
-      padding: 18px;
+      padding: 16px;
       font-family: 'Inter', sans-serif;
       font-size: 14px;
       font-weight: 700;
@@ -138,6 +174,7 @@
     .btn-primary:disabled {
       opacity: 0.3;
       cursor: not-allowed;
+      transform: none;
     }
     
     .btn-primary.success {
@@ -148,22 +185,47 @@
     .btn-secondary {
       background: transparent;
       color: #888;
-      margin-top: 12px;
+      margin-top: 10px;
       border: 2px solid #333;
     }
     
-    .btn-secondary:hover {
+    .btn-secondary:hover:not(:disabled) {
       color: #f7ff1a;
       border-color: #f7ff1a;
     }
     
-    .btn-secondary.hidden {
+    .btn-secondary:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    
+    .btn-email {
+      background: #2563eb;
+      color: #fff;
+      margin-top: 10px;
+    }
+    
+    .btn-email:hover:not(:disabled) {
+      background: #1d4ed8;
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+    }
+    
+    .btn-email:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    
+    .btn-email.success {
+      background: #10b981;
+    }
+    
+    .btn.hidden {
       display: none;
     }
     
     .status {
-      margin-top: 20px;
-      padding: 14px;
+      margin-top: 16px;
+      padding: 12px;
       border-radius: 10px;
       font-size: 12px;
       font-weight: 500;
@@ -184,6 +246,19 @@
     .status.loading {
       background: rgba(247, 255, 26, 0.05);
       color: #f7ff1a;
+    }
+    
+    .status.error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+    
+    .tool-signature {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 11px;
+      color: #444;
+      font-style: italic;
     }
     
     .preview-area {
@@ -267,14 +342,6 @@
       font-weight: 600;
     }
     
-    .tool-signature {
-      margin-top: 24px;
-      text-align: center;
-      font-size: 11px;
-      color: #444;
-      font-style: italic;
-    }
-    
     #qr-generator {
       position: absolute;
       left: -9999px;
@@ -286,6 +353,7 @@
       }
       .sidebar {
         width: 100%;
+        max-height: none;
       }
     }
   </style>
@@ -298,11 +366,14 @@
     </div>
     <p class="tool-title">QR Code Generator • Registrazione Punto</p>
     
+    <!-- SEZIONE QR CODE -->
+    <div class="section-title">Genera QR Code</div>
+    
     <div class="field">
       <label>Codice Punto</label>
       <input 
         type="text" 
-        class="input" 
+        class="input code-input" 
         id="codice-punto" 
         placeholder="Inserisci il codice"
         maxlength="20"
@@ -334,7 +405,67 @@
       Scarica PDF A4
     </button>
     
-    <div class="status" id="status"></div>
+    <div class="status" id="status-qr"></div>
+    
+    <!-- SEZIONE EMAIL -->
+    <div class="section-divider"></div>
+    <div class="section-title">Invia Email</div>
+    
+    <div class="field">
+      <label>Email Destinatario</label>
+      <input 
+        type="email" 
+        class="input" 
+        id="email-destinatario" 
+        placeholder="esempio@email.com"
+        autocomplete="off"
+      >
+    </div>
+    
+    <div class="field">
+      <label>User</label>
+      <input 
+        type="text" 
+        class="input" 
+        id="email-user" 
+        placeholder="Username operatore"
+        autocomplete="off"
+      >
+    </div>
+    
+    <div class="field">
+      <label>Password</label>
+      <input 
+        type="text" 
+        class="input" 
+        id="email-password" 
+        placeholder="Password operatore"
+        autocomplete="off"
+      >
+    </div>
+    
+    <div class="field">
+      <label>Referral QR</label>
+      <input 
+        type="text" 
+        class="input" 
+        id="email-referral" 
+        placeholder="Compilato automaticamente"
+        readonly
+        style="background: #111; color: #888;"
+      >
+    </div>
+    
+    <button class="btn btn-email" id="btn-send-email" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 2L11 13"/>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+      </svg>
+      Invia Email con PDF
+    </button>
+    
+    <div class="status" id="status-email"></div>
+    
     <div class="tool-signature">By Massimino Federico</div>
   </div>
   
@@ -366,7 +497,8 @@ const LOGO_ADM = 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbm
 // CONFIGURATION
 // ============================================================
 const CONFIG = {
-  baseUrl: 'https://www.daznbet.it/signup?codAffiliato='
+  baseUrl: 'https://www.daznbet.it/signup?codAffiliato=',
+  apiEndpoint: '/api/send-email'
 };
 
 // ============================================================
@@ -374,6 +506,7 @@ const CONFIG = {
 // ============================================================
 let currentQRData = null;
 let currentCode = '';
+let currentPdfBase64 = null;
 
 // ============================================================
 // DOM ELEMENTS
@@ -382,9 +515,17 @@ const inputCode = document.getElementById('codice-punto');
 const urlCodeSpan = document.getElementById('url-code');
 const btnGenerate = document.getElementById('btn-generate');
 const btnDownload = document.getElementById('btn-download');
-const statusDiv = document.getElementById('status');
+const btnSendEmail = document.getElementById('btn-send-email');
+const statusQR = document.getElementById('status-qr');
+const statusEmail = document.getElementById('status-email');
 const previewQR = document.getElementById('preview-qr');
 const qrContainer = document.getElementById('qr-generator');
+
+// Email fields
+const inputEmailTo = document.getElementById('email-destinatario');
+const inputEmailUser = document.getElementById('email-user');
+const inputEmailPassword = document.getElementById('email-password');
+const inputEmailReferral = document.getElementById('email-referral');
 
 // ============================================================
 // INIT LOGOS
@@ -447,14 +588,12 @@ function svgToPng(svgBase64, width, height) {
 // ============================================================
 // PDF GENERATION
 // ============================================================
-async function generatePDF(code, qrData) {
+async function generatePDF(code, qrData, returnBase64 = false) {
   const { jsPDF } = window.jspdf;
   
-  // A4 dimensions in mm
   const pageWidth = 210;
   const pageHeight = 297;
   
-  // Create PDF
   const pdf = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -505,7 +644,7 @@ async function generatePDF(code, qrData) {
   const concWidth = pdf.getTextWidth(concText);
   pdf.text(concText, (pageWidth - concWidth) / 2, footerY + 8);
   
-  // Add ADM logo (convert SVG to PNG first)
+  // Add ADM logo
   const admPngData = await svgToPng(LOGO_ADM, 400, 200);
   if (admPngData) {
     const admHeight = 12;
@@ -513,19 +652,83 @@ async function generatePDF(code, qrData) {
     pdf.addImage(admPngData, 'PNG', 130, footerY, admWidth, admHeight);
   }
   
-  // Save
-  pdf.save(`QR_DAZNBET_${code}.pdf`);
+  if (returnBase64) {
+    return pdf.output('datauristring').split(',')[1];
+  } else {
+    pdf.save(`QR_DAZNBET_${code}.pdf`);
+    return null;
+  }
+}
+
+// ============================================================
+// SEND EMAIL
+// ============================================================
+async function sendEmail() {
+  const to = inputEmailTo.value.trim();
+  const user = inputEmailUser.value.trim();
+  const password = inputEmailPassword.value.trim();
+  const referralQR = inputEmailReferral.value.trim();
+  
+  if (!to || !user || !password || !referralQR) {
+    showStatus(statusEmail, 'Compila tutti i campi', 'error');
+    return;
+  }
+  
+  showStatus(statusEmail, 'Generazione PDF e invio email...', 'loading');
+  
+  try {
+    // Generate PDF as base64
+    const pdfBase64 = await generatePDF(currentCode, currentQRData, true);
+    
+    const response = await fetch(CONFIG.apiEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        to,
+        user,
+        password,
+        referralQR,
+        pdfBase64,
+        pdfFilename: `QR_DAZNBET_${currentCode}.pdf`
+      }),
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok && result.success) {
+      showStatus(statusEmail, `Email inviata con successo a ${to}`, 'success');
+      btnSendEmail.classList.add('success');
+      btnSendEmail.innerHTML = '✓ Email Inviata';
+      
+      setTimeout(() => {
+        btnSendEmail.classList.remove('success');
+        btnSendEmail.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 2L11 13"/>
+            <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+          </svg>
+          Invia Email con PDF
+        `;
+      }, 3000);
+    } else {
+      throw new Error(result.error || 'Errore sconosciuto');
+    }
+  } catch (error) {
+    showStatus(statusEmail, `Errore: ${error.message}`, 'error');
+  }
 }
 
 // ============================================================
 // UI FUNCTIONS
 // ============================================================
-function showStatus(message, type = 'success') {
-  statusDiv.textContent = message;
-  statusDiv.className = `status visible ${type}`;
+function showStatus(element, message, type = 'success') {
+  element.textContent = message;
+  element.className = `status visible ${type}`;
   
   if (type === 'success') {
-    setTimeout(() => statusDiv.classList.remove('visible'), 4000);
+    setTimeout(() => element.classList.remove('visible'), 4000);
   }
 }
 
@@ -535,6 +738,15 @@ function updatePreview(qrData) {
   } else {
     previewQR.innerHTML = 'QR Code';
   }
+}
+
+function validateEmailForm() {
+  const hasQR = currentQRData !== null;
+  const hasTo = inputEmailTo.value.trim() !== '';
+  const hasUser = inputEmailUser.value.trim() !== '';
+  const hasPassword = inputEmailPassword.value.trim() !== '';
+  
+  btnSendEmail.disabled = !(hasQR && hasTo && hasUser && hasPassword);
 }
 
 function resetUI() {
@@ -550,7 +762,9 @@ function resetUI() {
   `;
   btnDownload.classList.add('hidden');
   currentQRData = null;
+  inputEmailReferral.value = '';
   updatePreview(null);
+  validateEmailForm();
 }
 
 // ============================================================
@@ -579,7 +793,7 @@ btnGenerate.addEventListener('click', async () => {
   if (!code) return;
   
   currentCode = code;
-  showStatus('Generazione QR Code...', 'loading');
+  showStatus(statusQR, 'Generazione QR Code...', 'loading');
   
   currentQRData = await generateQR(code);
   
@@ -590,18 +804,29 @@ btnGenerate.addEventListener('click', async () => {
     btnGenerate.innerHTML = '✓ QR Code Generato';
     btnDownload.classList.remove('hidden');
     
-    showStatus(`QR Code pronto per: ${code}`, 'success');
+    // Update referral field
+    inputEmailReferral.value = code;
+    
+    showStatus(statusQR, `QR Code pronto per: ${code}`, 'success');
+    validateEmailForm();
   }
 });
 
 btnDownload.addEventListener('click', async () => {
   if (!currentQRData || !currentCode) return;
   
-  showStatus('Generazione PDF...', 'loading');
+  showStatus(statusQR, 'Generazione PDF...', 'loading');
   
   await generatePDF(currentCode, currentQRData);
-  showStatus(`PDF scaricato: QR_DAZNBET_${currentCode}.pdf`, 'success');
+  showStatus(statusQR, `PDF scaricato: QR_DAZNBET_${currentCode}.pdf`, 'success');
 });
+
+btnSendEmail.addEventListener('click', sendEmail);
+
+// Email form validation
+inputEmailTo.addEventListener('input', validateEmailForm);
+inputEmailUser.addEventListener('input', validateEmailForm);
+inputEmailPassword.addEventListener('input', validateEmailForm);
 
 // ============================================================
 // INIT
