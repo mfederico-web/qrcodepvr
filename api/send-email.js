@@ -1,7 +1,5 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,6 +13,14 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  // Check API key
+  if (!process.env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY not configured');
+    return res.status(500).json({ error: 'API key non configurata' });
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     const { to, user, password, referralQR, pdfBase64, pdfFilename } = req.body;
@@ -161,10 +167,14 @@ export default async function handler(req, res) {
     }
 
     const data = await resend.emails.send(emailOptions);
-
+    
+    console.log('Email sent successfully:', data);
     return res.status(200).json({ success: true, data });
   } catch (error) {
     console.error('Email error:', error);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ 
+      error: error.message || 'Errore invio email',
+      details: error.toString()
+    });
   }
 }
