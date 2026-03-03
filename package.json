@@ -1,0 +1,9 @@
+{
+  "name": "daznbet-qr-generator",
+  "version": "1.0.0",
+  "description": "QR Code Generator for DAZNBET operators",
+  "author": "Massimino Federico",
+  "dependencies": {
+    "resend": "^2.0.0"
+  }
+}
