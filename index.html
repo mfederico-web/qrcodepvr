@@ -695,7 +695,17 @@ async function sendEmail() {
       }),
     });
     
-    const result = await response.json();
+    // Check if response is ok
+    const responseText = await response.text();
+    console.log('Response status:', response.status);
+    console.log('Response text:', responseText);
+    
+    let result;
+    try {
+      result = JSON.parse(responseText);
+    } catch (e) {
+      throw new Error(`Risposta server non valida: ${responseText.substring(0, 100)}`);
+    }
     
     if (response.ok && result.success) {
       showStatus(statusEmail, `Email inviata con successo a ${to}`, 'success');
@@ -716,6 +726,7 @@ async function sendEmail() {
       throw new Error(result.error || 'Errore sconosciuto');
     }
   } catch (error) {
+    console.error('Email error:', error);
     showStatus(statusEmail, `Errore: ${error.message}`, 'error');
   }
 }
